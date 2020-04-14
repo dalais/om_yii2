@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     /**
-     * All users for DataTables
+     * All users for DataTable
      *
      * @returns {[]}
      */
@@ -28,11 +28,17 @@ $(document).ready(function () {
         return usersArray;
     }
 
+    /**
+     * Data and parameters for DataTable
+     *
+     * @type {{data: *[], columns: [{title: string}, {title: string}, {title: string}, {title: string}], language: {url: string}, order: [number, string]}}
+     */
     let tableData = {
         language: {
             "url": "../DataTables/plug-ins/1.10.20/i18n/Russian.json"
         },
         data: allUsers(),
+        order: [0,'desc'],
         columns: [
             { title: "#" },
             { title: "Имя" },
@@ -41,12 +47,12 @@ $(document).ready(function () {
         ]
     };
 
-    let table = $('#main_table').DataTable(tableData);
-
     /**
      * DataTable init
+     *
+     * @type {jQuery}
      */
-    //$('#main_table').DataTable(tableData);
+    let table = $('#main_table').DataTable(tableData);
 
     var form = $('.collapse_form #user-form');
 
@@ -76,6 +82,8 @@ $(document).ready(function () {
                 city: $('#user-form').find('input[name="city"]').val()
             }
         ).done(function (data) {
+
+            // Make data for new row
             let skills = '';
             let row = [];
             for (let [key, skill] of Object.entries(data.skills)) {
@@ -94,6 +102,7 @@ $(document).ready(function () {
                 $('#user-form').find('input[name="city"]').val('');
             }, 500)
         }).fail(function () {
+            // Alert, if something went wrong
             userAlert('alert alert-danger', 'Данные не сохранились. Произошла ошибка')
         });
     });
